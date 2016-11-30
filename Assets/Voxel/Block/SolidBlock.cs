@@ -166,10 +166,10 @@ namespace Aurayu.VoxelWorld.Voxel.Block
 
         private static Mesh FaceEast(int x, int y, int z, Mesh mesh)
         {
-            var vertex0 = new Vector3(x + HalfWidth, y - HalfWidth, z - HalfWidth);
-            var vertex1 = new Vector3(x + HalfWidth, y - HalfWidth, z + HalfWidth);
-            var vertex2 = new Vector3(x + HalfWidth, y + HalfWidth, z - HalfWidth);
-            var vertex3 = new Vector3(x + HalfWidth, y + HalfWidth, z + HalfWidth);
+            var vertex0 = new Vector3(x - HalfWidth, y - HalfWidth, z + HalfWidth);
+            var vertex1 = new Vector3(x - HalfWidth, y - HalfWidth, z - HalfWidth);
+            var vertex2 = new Vector3(x - HalfWidth, y + HalfWidth, z + HalfWidth);
+            var vertex3 = new Vector3(x - HalfWidth, y + HalfWidth, z - HalfWidth);
 
             AddQuad(vertex0, vertex1, vertex2, vertex3, mesh);
 
@@ -180,10 +180,10 @@ namespace Aurayu.VoxelWorld.Voxel.Block
 
         private static Mesh FaceWest(int x, int y, int z, Mesh mesh)
         {
-            var vertex0 = new Vector3(x - HalfWidth, y - HalfWidth, z + HalfWidth);
-            var vertex1 = new Vector3(x - HalfWidth, y - HalfWidth, z - HalfWidth);
-            var vertex2 = new Vector3(x - HalfWidth, y + HalfWidth, z + HalfWidth);
-            var vertex3 = new Vector3(x - HalfWidth, y + HalfWidth, z - HalfWidth);
+            var vertex0 = new Vector3(x + HalfWidth, y - HalfWidth, z - HalfWidth);
+            var vertex1 = new Vector3(x + HalfWidth, y - HalfWidth, z + HalfWidth);
+            var vertex2 = new Vector3(x + HalfWidth, y + HalfWidth, z - HalfWidth);
+            var vertex3 = new Vector3(x + HalfWidth, y + HalfWidth, z + HalfWidth);
 
             AddQuad(vertex0, vertex1, vertex2, vertex3, mesh);
 

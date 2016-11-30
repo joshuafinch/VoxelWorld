@@ -33,6 +33,7 @@ namespace Aurayu.VoxelWorld.Unity
             }
 
             _chunk.SetBlock(new Point3D(3, 5, 2), new SolidBlock());
+            _chunk.SetBlock(new Point3D(4, 5, 2), new SolidBlock());
 
             UpdateChunk();
         }
