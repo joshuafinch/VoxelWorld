@@ -12,8 +12,8 @@ namespace Aurayu.VoxelWorld.Voxel.Block
         private const int TextureSheetWidth = 192;
         private const int TextureSheetHeight = 32;
 
-        private const float Columns = (float) TextureSheetWidth/(float) TileWidth;
-        private const float Rows = (float) TextureSheetHeight/(float) TileHeight;
+        private const float Columns = TextureSheetWidth/(float) TileWidth;
+        private const float Rows = TextureSheetHeight/(float) TileHeight;
 
         public const float ColumnWidth = (float)1.0/Columns;
         public const float RowHeight = (float)1.0/Rows;
@@ -22,9 +22,6 @@ namespace Aurayu.VoxelWorld.Voxel.Block
     public class SolidBlock: IBlock
     {
         private const float HalfWidth = 0.5f;
-
-        private const float TileWidth = 0.25f;
-        private const float TileHeight = 0.25f;
 
         public bool IsSolid(Direction direction)
         {

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace Aurayu.VoxelWorld.Voxel
@@ -14,10 +11,5 @@ namespace Aurayu.VoxelWorld.Voxel
 
         public List<Vector3> ColliderVertices = new List<Vector3>(); 
         public List<int> ColliderTriangles = new List<int>();
-
-        public Mesh() 
-        {
-            
-        }
     }
 }

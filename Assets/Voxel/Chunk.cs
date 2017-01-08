@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Security.Cryptography.X509Certificates;
 
 namespace Aurayu.VoxelWorld.Voxel
 {
@@ -11,18 +10,15 @@ namespace Aurayu.VoxelWorld.Voxel
 
         public IBlock[] Blocks { get; set; }
 
-        public int X { get; set; }
-        public int Z { get; set; }
+        public readonly Point3D Position;
+        private readonly World _world;
 
-        public Chunk()
-        {
-             
-        }
+        public bool update = false;
 
-        public Chunk(Point2D coordinates) : this()
+        public Chunk(Point3D position, World world)
         {
-            X = coordinates.X;
-            Z = coordinates.Z;
+            Position = position;
+            _world = world;
 
             const int size = Width * Height * Depth;
             Blocks = new IBlock[size];
@@ -31,21 +27,57 @@ namespace Aurayu.VoxelWorld.Voxel
         // Sets the block at the relative coordinates
         public void SetBlock(Point3D coordinates, IBlock block)
         {
-            var index = GetBlockIndex(coordinates);
-            Blocks[index] = block;
+            if (InRangeX(coordinates.X) &&
+                InRangeY(coordinates.Y) &&
+                InRangeZ(coordinates.Z))
+            {
+                var index = GetBlockIndex(coordinates);
+                Blocks[index] = block;
+            }
+            else
+            {
+                var x = Position.X + coordinates.X;
+                var y = Position.Y + coordinates.Y;
+                var z = Position.Z + coordinates.Z;
+                _world.SetBlock(new Point3D(x, y, z), block);
+            }
+
+            update = true;
         }
 
         // Gets the block at the relative coordinates
         public IBlock GetBlock(Point3D coordinates)
         {
-            var index = GetBlockIndex(coordinates);
-            return Blocks[index];
+            if (InRangeX(coordinates.X) &&
+                InRangeY(coordinates.Y) &&
+                InRangeZ(coordinates.Z))
+            {
+                var index = GetBlockIndex(coordinates);
+                return Blocks[index];
+            }
+
+            var x = Position.X + coordinates.X;
+            var y = Position.Y + coordinates.Y;
+            var z = Position.Z + coordinates.Z;
+            return _world.GetBlock(new Point3D(x, y, z));
         }
 
         public IBlock GetBlockAdjacent(Point3D coordinates, Direction direction)
         {
-            var index = GetBlockAdjacentIndex(coordinates, direction);
-            return Blocks[index];
+            var adjacentBlockCoordinates = GetBlockAdjacentCoordinates(coordinates, direction);
+
+            if (InRangeX(adjacentBlockCoordinates.X) &&
+                InRangeY(adjacentBlockCoordinates.Y) &&
+                InRangeZ(adjacentBlockCoordinates.Z))
+            {
+                var index = GetBlockAdjacentIndex(coordinates, direction);
+                return Blocks[index];
+            }
+
+            var x = Position.X + adjacentBlockCoordinates.X;
+            var y = Position.Y + adjacentBlockCoordinates.Y;
+            var z = Position.Z + adjacentBlockCoordinates.Z;
+            return _world.GetBlock(new Point3D(x, y, z));
         }
 
         private static int GetBlockIndex(Point3D coordinates)
@@ -80,12 +112,19 @@ namespace Aurayu.VoxelWorld.Voxel
             }
         }
 
-        public void Update()
+        private static bool InRangeX(int index)
         {
+            return index >= 0 && index < Width;
         }
 
-        public void Render()
+        private static bool InRangeY(int index)
         {
+            return index >= 0 && index < Height;
+        }
+
+        private static bool InRangeZ(int index)
+        {
+            return index >= 0 && index < Depth;
         }
     }
 }
