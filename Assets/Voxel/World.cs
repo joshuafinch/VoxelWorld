@@ -36,18 +36,18 @@ namespace Aurayu.VoxelWorld.Voxel
             return block;
         }
 
-        public void SetBlock(Point3D worldPosition, IBlock block)
+        public bool SetBlock(Point3D worldPosition, IBlock block)
         {
             var chunkPositionInWorld = GetChunkPositionInWorld(worldPosition);
             var chunk = GetChunk(chunkPositionInWorld);
 
             if (chunk == null)
-                return;
+                return false;
 
             var x = worldPosition.X - chunk.Position.X;
             var y = worldPosition.Y - chunk.Position.Y;
             var z = worldPosition.Z - chunk.Position.Z;
-            chunk.SetBlock(new Point3D(x, y, z), block);
+            return chunk.SetBlock(new Point3D(x, y, z), block);
         }
 
         private static Point3D GetChunkPositionInWorld(Point3D worldPosition)

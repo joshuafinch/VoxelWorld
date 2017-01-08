@@ -1,5 +1,4 @@
-﻿using System;
-using Aurayu.VoxelWorld.Voxel;
+﻿using Aurayu.VoxelWorld.Voxel;
 using UnityEngine;
 using Mesh = Aurayu.VoxelWorld.Voxel.Mesh;
 

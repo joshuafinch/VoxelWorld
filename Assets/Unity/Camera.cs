@@ -1,12 +1,8 @@
 ﻿using System;
 using UnityEngine;
-using System.Collections;
-using System.Runtime.Remoting.Messaging;
 using Aurayu.VoxelWorld.Voxel;
 using Aurayu.VoxelWorld.Voxel.Block;
 using JetBrains.Annotations;
-using UnityEngine.Assertions.Comparers;
-using UnityEngine.Networking;
 
 namespace Aurayu.VoxelWorld.Unity
 {
@@ -15,7 +11,7 @@ namespace Aurayu.VoxelWorld.Unity
         private Vector2 _rotation;
 
         [SerializeField]
-        private World _world;
+        private World _world = null;
 
         // Use this for initialization
         internal void Start()
@@ -51,30 +47,14 @@ namespace Aurayu.VoxelWorld.Unity
         private bool SetBlock(RaycastHit hit, IBlock block, bool adjacent = false)
         {
             var position = GetBlockPosition(hit, adjacent);
-
-//            var chunk = hit.collider.GetComponent<Chunk>();
-//            if (chunk == null)
-//                return false;
-//
-//            chunk.ChunkData.SetBlock(position, block);
-
-            _world.SetBlock(position, block);
-
-            return true;
+            return _world.SetBlock(position, block);
         }
 
         [CanBeNull]
         private IBlock GetBlock(RaycastHit hit, bool adjacent = false)
         {
             var position = GetBlockPosition(hit, adjacent);
-
             var block = _world.GetBlock(position);
-
-//            var chunk = hit.collider.GetComponent<Chunk>();
-//            if (chunk == null)
-//                return null;
-//
-//            var block = chunk.ChunkData.GetBlock(position);
             return block;
         }
 

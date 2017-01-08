@@ -9,7 +9,7 @@ namespace Aurayu.VoxelWorld.Unity
     internal class World: MonoBehaviour
     {
         [SerializeField]
-        private GameObject _chunkPrefab;
+        private GameObject _chunkPrefab = null;
 
         private readonly Dictionary<Point3D, Chunk> _chunks = new Dictionary<Point3D, Chunk>();
         private readonly Voxel.World _world = new Voxel.World();
@@ -86,9 +86,9 @@ namespace Aurayu.VoxelWorld.Unity
             return _world.GetBlock(positionInWorld);
         }
 
-        internal void SetBlock(Point3D positionInWorld, IBlock block)
+        internal bool SetBlock(Point3D positionInWorld, IBlock block)
         {
-            _world.SetBlock(positionInWorld, block);
+            return _world.SetBlock(positionInWorld, block);
         }
     }
 }

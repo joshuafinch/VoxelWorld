@@ -25,24 +25,28 @@ namespace Aurayu.VoxelWorld.Voxel
         }
 
         // Sets the block at the relative coordinates
-        public void SetBlock(Point3D coordinates, IBlock block)
+        public bool SetBlock(Point3D coordinates, IBlock block)
         {
+            bool didSetBlock;
+
             if (InRangeX(coordinates.X) &&
                 InRangeY(coordinates.Y) &&
                 InRangeZ(coordinates.Z))
             {
                 var index = GetBlockIndex(coordinates);
                 Blocks[index] = block;
+                didSetBlock = true;
             }
             else
             {
                 var x = Position.X + coordinates.X;
                 var y = Position.Y + coordinates.Y;
                 var z = Position.Z + coordinates.Z;
-                _world.SetBlock(new Point3D(x, y, z), block);
+                didSetBlock = _world.SetBlock(new Point3D(x, y, z), block);
             }
 
             Update = true;
+            return didSetBlock;
         }
 
         // Gets the block at the relative coordinates
@@ -82,7 +86,7 @@ namespace Aurayu.VoxelWorld.Voxel
 
         private static int GetBlockIndex(Point3D coordinates)
         {
-            return coordinates.Y + (coordinates.Z*Height) + (coordinates.X*Height*Width);
+            return coordinates.Y + coordinates.Z * Height + coordinates.X * Height * Width;
         }
 
         private static int GetBlockAdjacentIndex(Point3D coordinates, Direction direction)
