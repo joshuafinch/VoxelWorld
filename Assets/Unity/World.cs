@@ -8,14 +8,15 @@ namespace Aurayu.VoxelWorld.Unity
 {
     internal class World: MonoBehaviour
     {
-        public GameObject ChunkPrefab;
+        [SerializeField]
+        private GameObject _chunkPrefab;
 
         private readonly Dictionary<Point3D, Chunk> _chunks = new Dictionary<Point3D, Chunk>();
         private readonly Voxel.World _world = new Voxel.World();
 
         internal void Start()
         {
-            Debug.Assert(ChunkPrefab != null, "ChunkPrefab != null");
+            Debug.Assert(_chunkPrefab != null, "_chunkPrefab != null");
 
             for (var x = -2; x < 2; x++)
             {
@@ -33,10 +34,10 @@ namespace Aurayu.VoxelWorld.Unity
             //CreateChunk(new Point3D(0, 0, 0));
         }
 
-        private void CreateChunk(Point3D coordinates)
+        internal void CreateChunk(Point3D coordinates)
         {
             var newChunkObject = Instantiate(
-                ChunkPrefab,
+                _chunkPrefab,
                 new Vector3(coordinates.X, coordinates.Y, coordinates.Z),
                 Quaternion.Euler(Vector3.zero)) as GameObject;
 
@@ -69,15 +70,25 @@ namespace Aurayu.VoxelWorld.Unity
             } 
         }
 
-        private void DestroyChunk(Point3D coordinates)
+        internal void DestroyChunk(Point3D coordinates)
         {
-            Chunk chunk = null;
+            Chunk chunk;
 
             if (!_chunks.TryGetValue(coordinates, out chunk))
                 return;
 
             Destroy(chunk.gameObject);
             _chunks.Remove(coordinates);
+        }
+
+        internal IBlock GetBlock(Point3D positionInWorld)
+        {
+            return _world.GetBlock(positionInWorld);
+        }
+
+        internal void SetBlock(Point3D positionInWorld, IBlock block)
+        {
+            _world.SetBlock(positionInWorld, block);
         }
     }
 }

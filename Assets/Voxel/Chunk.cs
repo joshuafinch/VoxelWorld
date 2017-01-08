@@ -13,7 +13,7 @@ namespace Aurayu.VoxelWorld.Voxel
         public readonly Point3D Position;
         private readonly World _world;
 
-        public bool update = false;
+        public bool Update;
 
         public Chunk(Point3D position, World world)
         {
@@ -42,7 +42,7 @@ namespace Aurayu.VoxelWorld.Voxel
                 _world.SetBlock(new Point3D(x, y, z), block);
             }
 
-            update = true;
+            Update = true;
         }
 
         // Gets the block at the relative coordinates

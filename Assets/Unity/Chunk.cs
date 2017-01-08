@@ -1,4 +1,5 @@
-﻿using Aurayu.VoxelWorld.Voxel;
+﻿using System;
+using Aurayu.VoxelWorld.Voxel;
 using UnityEngine;
 using Mesh = Aurayu.VoxelWorld.Voxel.Mesh;
 
@@ -22,15 +23,17 @@ namespace Aurayu.VoxelWorld.Unity
 
         private void Update()
         {
-            if (!ChunkData.update)
+            if (!ChunkData.Update)
                 return;
 
-            ChunkData.update = false;
+            ChunkData.Update = false;
 
             UpdateChunk();
         }
 
-        // Updates the chunk based on its contents
+        /// <summary>
+        /// Updates the chunk based on its contents
+        /// </summary>
         private void UpdateChunk()
         {
             var mesh = new Mesh();
@@ -50,16 +53,31 @@ namespace Aurayu.VoxelWorld.Unity
 
             RenderMesh(mesh);
         }
-        // Sends the calculated mesh information
-        // to the mesh and collision components
+
+        /// <summary>
+        /// Sends the calculated mesh information to the mesh and collision components
+        /// </summary>
+        /// <param name="mesh"></param>
         private void RenderMesh(Mesh mesh)
         {
+            Debug.Log("RenderMesh");
+
             _filter.mesh.Clear();
             _filter.mesh.vertices = mesh.Vertices.ToArray();
             _filter.mesh.triangles = mesh.Triangles.ToArray();
             _filter.mesh.uv = mesh.Uvs.ToArray();
             _filter.mesh.RecalculateNormals();
             _filter.mesh.Optimize();
+
+            var colliderMesh = new UnityEngine.Mesh
+            {
+                vertices = mesh.ColliderVertices.ToArray(),
+                triangles = mesh.ColliderTriangles.ToArray()
+            };
+            colliderMesh.RecalculateNormals();
+            colliderMesh.Optimize();
+
+            _collider.sharedMesh = colliderMesh;
         }
     }
 }

@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Aurayu.VoxelWorld.Voxel.Block;
 using JetBrains.Annotations;
-using UnityEditorInternal;
 using UnityEngine;
 
 namespace Aurayu.VoxelWorld.Voxel
@@ -19,8 +17,8 @@ namespace Aurayu.VoxelWorld.Voxel
         [CanBeNull]
         public Chunk GetChunk(Point3D chunkPositionInWorld)
         {
-            Chunk chunk = null;
-            Chunks.TryGetValue(chunkPositionInWorld, out chunk);
+            Chunk chunk;
+            Chunks.TryGetValue(chunkPositionInWorld, out chunk); 
             return chunk;
         }
 

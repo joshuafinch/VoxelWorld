@@ -191,29 +191,36 @@ namespace Aurayu.VoxelWorld.Voxel.Block
 
         private static void AddQuad(Vector3 vertex0, Vector3 vertex1, Vector3 vertex2, Vector3 vertex3, Mesh mesh)
         {
-            // 2       3
-            // |-------|
-            // |       |
-            // |       |
-            // |-------|
-            // 0       1
+            mesh.Vertices.Add(vertex0);
+            mesh.Vertices.Add(vertex1);
+            mesh.Vertices.Add(vertex2);
+            mesh.Vertices.Add(vertex3);
 
-            mesh.Vertices.Add(vertex0); // 0
-            mesh.Vertices.Add(vertex1); // 1
-            mesh.Vertices.Add(vertex2); // 2
-            mesh.Vertices.Add(vertex3); // 3
+            mesh.ColliderVertices.Add(vertex0);
+            mesh.ColliderVertices.Add(vertex1);
+            mesh.ColliderVertices.Add(vertex2);
+            mesh.ColliderVertices.Add(vertex3);
 
             var numberOfVertices = mesh.Vertices.Count;
+            var numberOfColliderVertices = mesh.ColliderVertices.Count;
 
             // Bottom Left Triangle
-            mesh.Triangles.Add(numberOfVertices - 4); // 0
-            mesh.Triangles.Add(numberOfVertices - 2); // 2
-            mesh.Triangles.Add(numberOfVertices - 3); // 1
+            mesh.Triangles.Add(numberOfVertices - 4);
+            mesh.Triangles.Add(numberOfVertices - 2);
+            mesh.Triangles.Add(numberOfVertices - 3);
+
+            mesh.ColliderTriangles.Add(numberOfColliderVertices - 4);
+            mesh.ColliderTriangles.Add(numberOfColliderVertices - 2);
+            mesh.ColliderTriangles.Add(numberOfColliderVertices - 3);
 
             // Top Right Triangle
-            mesh.Triangles.Add(numberOfVertices - 2); // 2
-            mesh.Triangles.Add(numberOfVertices - 1); // 3
-            mesh.Triangles.Add(numberOfVertices - 3); // 1
+            mesh.Triangles.Add(numberOfVertices - 2);
+            mesh.Triangles.Add(numberOfVertices - 1);
+            mesh.Triangles.Add(numberOfVertices - 3);
+
+            mesh.ColliderTriangles.Add(numberOfColliderVertices - 2);
+            mesh.ColliderTriangles.Add(numberOfColliderVertices - 1);
+            mesh.ColliderTriangles.Add(numberOfColliderVertices - 3);
         }
     }
 }
