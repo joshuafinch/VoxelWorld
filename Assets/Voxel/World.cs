@@ -36,7 +36,7 @@ namespace Aurayu.VoxelWorld.Voxel
             return block;
         }
 
-        public bool SetBlock(Point3D worldPosition, IBlock block)
+        public bool SetBlock(Point3D worldPosition, IBlock block, bool updateAdjacentChunks = false)
         {
             var chunkPositionInWorld = GetChunkPositionInWorld(worldPosition);
             var chunk = GetChunk(chunkPositionInWorld);
@@ -47,7 +47,63 @@ namespace Aurayu.VoxelWorld.Voxel
             var x = worldPosition.X - chunk.Position.X;
             var y = worldPosition.Y - chunk.Position.Y;
             var z = worldPosition.Z - chunk.Position.Z;
-            return chunk.SetBlock(new Point3D(x, y, z), block);
+            var updatedBlockPositionInChunk = new Point3D(x, y, z);
+            var didSetBlock = chunk.SetBlock(updatedBlockPositionInChunk, block);
+
+            if (didSetBlock && updateAdjacentChunks)
+            {
+                SetAdjacentChunksToUpdate(chunkPositionInWorld, updatedBlockPositionInChunk);
+            }
+
+            return didSetBlock;
+        }
+
+        private void SetAdjacentChunksToUpdate(Point3D chunkPositionInWorld, Point3D updatedBlockPositionInChunk)
+        {
+            if (updatedBlockPositionInChunk.X == 0)
+            {
+                var adjacentChunkPosition = new Point3D(chunkPositionInWorld.X - Chunk.Width, chunkPositionInWorld.Y, chunkPositionInWorld.Z);
+                UpdateChunk(adjacentChunkPosition);
+            }
+
+            if (updatedBlockPositionInChunk.X == Chunk.Width - 1)
+            {
+                var adjacentChunkPosition = new Point3D(chunkPositionInWorld.X + Chunk.Width, chunkPositionInWorld.Y, chunkPositionInWorld.Z);
+                UpdateChunk(adjacentChunkPosition);
+            }
+
+            if (updatedBlockPositionInChunk.Y == 0)
+            {
+                var adjacentChunkPosition = new Point3D(chunkPositionInWorld.X, chunkPositionInWorld.Y - Chunk.Height, chunkPositionInWorld.Z);
+                UpdateChunk(adjacentChunkPosition);
+            }
+
+            if (updatedBlockPositionInChunk.Y == Chunk.Height - 1)
+            {
+                var adjacentChunkPosition = new Point3D(chunkPositionInWorld.X, chunkPositionInWorld.Y + Chunk.Height, chunkPositionInWorld.Z);
+                UpdateChunk(adjacentChunkPosition);
+            }
+
+            if (updatedBlockPositionInChunk.Z == 0)
+            {
+                var adjacentChunkPosition = new Point3D(chunkPositionInWorld.X, chunkPositionInWorld.Y, chunkPositionInWorld.Z - Chunk.Depth);
+                UpdateChunk(adjacentChunkPosition);
+            }
+
+            if (updatedBlockPositionInChunk.Z == Chunk.Depth - 1)
+            {
+                var adjacentChunkPosition = new Point3D(chunkPositionInWorld.X, chunkPositionInWorld.Y, chunkPositionInWorld.Z + Chunk.Depth);
+                UpdateChunk(adjacentChunkPosition);
+            }
+        }
+
+        private void UpdateChunk(Point3D chunkPositionInWorld)
+        {
+            var chunk = GetChunk(chunkPositionInWorld);
+            if (chunk != null)
+            {
+                chunk.Update = true;
+            }
         }
 
         private static Point3D GetChunkPositionInWorld(Point3D worldPosition)

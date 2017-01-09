@@ -88,7 +88,7 @@ namespace Aurayu.VoxelWorld.Unity
 
         internal bool SetBlock(Point3D positionInWorld, IBlock block)
         {
-            return _world.SetBlock(positionInWorld, block);
+            return _world.SetBlock(positionInWorld, block, true);
         }
     }
 }

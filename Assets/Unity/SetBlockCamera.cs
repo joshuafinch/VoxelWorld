@@ -6,42 +6,54 @@ using JetBrains.Annotations;
 
 namespace Aurayu.VoxelWorld.Unity
 {
-    public class Camera : MonoBehaviour
+    public class SetBlockCamera : MonoBehaviour
     {
         private Vector2 _rotation;
 
         [SerializeField]
         private World _world = null;
 
+        private int _environmentLayerMask;
+
         // Use this for initialization
         internal void Start()
         {
             Debug.Assert(_world != null, "_world != null");
+
+            _environmentLayerMask = 1 << LayerMask.NameToLayer("Environment");
         }
 
         // Update is called once per frame
         internal void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (Input.GetButtonDown("Fire1"))
             {
+                Debug.Log("Fire1");
                 RaycastHit hit;
 
-                if (Physics.Raycast(transform.position, transform.forward, out hit, 100))
+                if (Physics.Raycast(transform.position, transform.forward, out hit, 100, _environmentLayerMask))
                 {
-                    print("Hit: " + hit.point);
-                    SetBlock(hit, new AirBlock());
+                    Debug.DrawLine(transform.position, hit.point);
+                    print("Hit: " + hit.point + ", collider: " + hit.collider);
+
+                    if (!SetBlock(hit, new AirBlock()))
+                    {
+                        print("Couldn't convert block at" + hit.point + " to air block");
+                    }
                 }
             }
+            else if (Input.GetButtonDown("Fire2"))
+            {
+                Debug.Log("Fire1");
 
-            _rotation = new Vector2(
-                _rotation.x + Input.GetAxis("Mouse X")*3,
-                _rotation.y + Input.GetAxis("Mouse Y")*3);
+                RaycastHit hit;
 
-            transform.localRotation = Quaternion.AngleAxis(_rotation.x, Vector3.up);
-            transform.localRotation = Quaternion.AngleAxis(_rotation.y, Vector3.left);
-
-            transform.position += transform.forward*3*Input.GetAxis("Vertical");
-            transform.position += transform.right*3*Input.GetAxis("Horizontal");
+                if (Physics.Raycast(transform.position, transform.forward, out hit, 100, _environmentLayerMask))
+                {
+                    print("Hit: " + hit.point);
+                    SetBlock(hit, new SolidBlock(), true);
+                }
+            }
         }
 
         private bool SetBlock(RaycastHit hit, IBlock block, bool adjacent = false)

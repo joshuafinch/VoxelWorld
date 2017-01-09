@@ -349,7 +349,14 @@ PlayerSettings:
   psp2UseDebugIl2cppLibs: 0
   psmSplashimage: {fileID: 0}
   spritePackerPolicy: 
-  scriptingDefineSymbols: {}
+  scriptingDefineSymbols:
+    1: CROSS_PLATFORM_INPUT
+    4: CROSS_PLATFORM_INPUT
+    7: CROSS_PLATFORM_INPUT
+    14: CROSS_PLATFORM_INPUT
+    17: 
+    20: 
+    22: 
   metroPackageName: VoxelWorld
   metroPackageVersion: 
   metroCertificatePath: 
